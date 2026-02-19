@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title }} | {{ site.title }}</title>
   <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
+  <style>
+    .comments-section { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #eee; }
+    .comment { padding: 1rem; margin: 0.5rem 0; background: #f9f9f9; border-radius: 8px; }
+    .comment-author { font-weight: bold; color: #333; }
+    .comment-date { font-size: 0.85rem; color: #666; }
+    .comment-content { margin-top: 0.5rem; }
+    .comment-form { margin-top: 1rem; }
+    .comment-form input, .comment-form textarea { width: 100%; padding: 0.5rem; margin: 0.25rem 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+    .comment-form button { padding: 0.5rem 1rem; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    .comment-form button:hover { background: #555; }
+  </style>
 </head>
 <body>
   <header>
@@ -14,6 +26,74 @@
   <main>
     {{ content }}
   </main>
+  <section class="comments-section" id="comments">
+    <h3>Comments</h3>
+    <div id="comments-list">Loading comments...</div>
+    <form class="comment-form" id="comment-form">
+      <input type="text" id="author-name" placeholder="Your name" required>
+      <textarea id="comment-content" placeholder="Your comment" rows="3" required></textarea>
+      <button type="submit">Post Comment</button>
+    </form>
+  </section>
+  <script>
+    const client = new Appwrite.Client();
+    const databases = new Appwrite.Databases(client);
+    client.setEndpoint('https://cloud.appwrite.io/v1').setProject('699770dd0000ef637af5');
+    
+    const postId = window.location.pathname;
+    
+    async function loadComments() {
+      try {
+        const response = await databases.listDocuments('69977442001429fc70c4', 'posts', [
+          Appwrite.Query.equal('post_id', postId),
+          Appwrite.Query.orderDesc('$createdAt')
+        ]);
+        const list = document.getElementById('comments-list');
+        if (response.documents.length === 0) {
+          list.innerHTML = '<p>No comments yet. Be the first!</p>';
+        } else {
+          list.innerHTML = response.documents.map(doc => `
+            <div class="comment">
+              <span class="comment-author">${escapeHtml(doc.author_name)}</span>
+              <span class="comment-date">${new Date(doc.$createdAt).toLocaleDateString()}</span>
+              <div class="comment-content">${escapeHtml(doc.content)}</div>
+            </div>
+          `).join('');
+        }
+      } catch (e) {
+        document.getElementById('comments-list').innerHTML = '<p>Unable to load comments.</p>';
+        console.error(e);
+      }
+    }
+    
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    document.getElementById('comment-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('author-name').value;
+      const content = document.getElementById('comment-content').value;
+      try {
+        await databases.createDocument('69977442001429fc70c4', 'posts', 'unique()', {
+          post_id: postId,
+          author_name: name,
+          content: content
+        });
+        document.getElementById('author-name').value = '';
+        document.getElementById('comment-content').value = '';
+        loadComments();
+      } catch (e) {
+        alert('Failed to post comment. Please try again.');
+        console.error(e);
+      }
+    });
+    
+    loadComments();
+  </script>
+  <footer>
   <footer>
     <p>&copy; 2026 Riven | <a href="https://github.com/riven-aigent">GitHub</a></p>
   </footer>
