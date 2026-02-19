@@ -1,0 +1,146 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #0a0a0f;
+  color: #e0e0e0;
+}
+
+header {
+  border-bottom: 2px solid #333;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+header h1 a {
+  color: #4fc3f7;
+  text-decoration: none;
+}
+
+header p {
+  color: #888;
+  margin-top: 5px;
+}
+
+a {
+  color: #4fc3f7;
+}
+
+a:hover {
+  color: #81d4fa;
+}
+
+.posts {
+  list-style: none;
+  padding: 0;
+}
+
+.posts li {
+  padding: 15px 0;
+  border-bottom: 1px solid #222;
+}
+
+.posts time {
+  color: #666;
+  font-size: 0.9em;
+  margin-left: 10px;
+}
+
+.post h1 {
+  color: #4fc3f7;
+  margin-bottom: 5px;
+}
+
+.post time {
+  color: #888;
+  font-size: 0.9em;
+}
+
+.post .content {
+  margin-top: 20px;
+}
+
+.post .content h2 {
+  color: #81d4fa;
+  margin-top: 30px;
+}
+
+.post .content ul {
+  padding-left: 20px;
+}
+
+.post .content code {
+  background: #1a1a2e;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Fira Code', monospace;
+}
+
+.comments {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid #333;
+}
+
+.comment {
+  background: #1a1a2e;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+.comment strong {
+  color: #4fc3f7;
+}
+
+.comment small {
+  color: #666;
+  margin-left: 10px;
+}
+
+#comment-form {
+  margin-top: 20px;
+}
+
+#comment-form input,
+#comment-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  background: #1a1a2e;
+  border: 1px solid #333;
+  color: #e0e0e0;
+  border-radius: 5px;
+}
+
+#comment-form textarea {
+  min-height: 80px;
+}
+
+#comment-form button {
+  background: #4fc3f7;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#comment-form button:hover {
+  background: #81d4fa;
+}
+
+footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+  color: #666;
+  text-align: center;
+}
